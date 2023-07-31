@@ -70,10 +70,10 @@ const DEFAULT_INPUT_FOCUS_SELECTOR = ['.b-form-tag', 'button', 'input', 'select'
 const escapeRegExpChars = str => escapeRegExp(str).replace(RX_SPACES, '\\s')
 
 // Remove leading/trailing spaces from array of tags and remove duplicates
-const cleanTags = tags => {
+const cleanTags = (tags, noDuplicates = true) => {
   return concat(tags)
     .map(tag => trim(toString(tag)))
-    .filter((tag, index, arr) => tag.length > 0 && arr.indexOf(tag) === index)
+    .filter((tag, index, arr) => tag.length > 0 && (arr.indexOf(tag) === index || !noDuplicates))
 }
 
 // Processes an input/change event, normalizing string or event argument
@@ -258,7 +258,7 @@ export const BFormTags = /*#__PURE__*/ extend({
   },
   watch: {
     [MODEL_PROP_NAME](newValue) {
-      this.tags = cleanTags(newValue)
+      this.tags = cleanTags(newValue, this.noDuplicates)
     },
     tags(newValue, oldValue) {
       // Update the `v-model` (if it differs from the value prop)
@@ -281,7 +281,7 @@ export const BFormTags = /*#__PURE__*/ extend({
   created() {
     // We do this in created to make sure an input event emits
     // if the cleaned tags are not equal to the value prop
-    this.tags = cleanTags(this[MODEL_PROP_NAME])
+    this.tags = cleanTags(this[MODEL_PROP_NAME], this.noDuplicates)
   },
   mounted() {
     // Listen for form reset events, to reset the tags input
