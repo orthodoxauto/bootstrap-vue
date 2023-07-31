@@ -133,7 +133,8 @@ const props = makePropsConfigurable(
     tagRemoveLabel: makeProp(PROP_TYPE_STRING, 'Remove tag'),
     tagRemovedLabel: makeProp(PROP_TYPE_STRING, 'Tag removed'),
     tagValidator: makeProp(PROP_TYPE_FUNCTION),
-    tagVariant: makeProp(PROP_TYPE_STRING, 'secondary')
+    tagVariant: makeProp(PROP_TYPE_STRING, 'secondary'),
+    noDuplicates: makeProp(PROP_TYPE_BOOLEAN, true)
   }),
   NAME_FORM_TAGS
 )
@@ -314,7 +315,10 @@ export const BFormTags = /*#__PURE__*/ extend({
           // work with `<select>` elements
           this.newTag = ''
         } else {
-          const invalidAndDuplicates = [...parsed.invalid, ...parsed.duplicate]
+          const invalidAndDuplicates = [
+            ...parsed.invalid,
+            ...(this.noDuplicates ? parsed.duplicate : [])
+          ]
           this.newTag = parsed.all
             .filter(tag => arrayIncludes(invalidAndDuplicates, tag))
             .join(this.computedJoiner)
@@ -498,13 +502,19 @@ export const BFormTags = /*#__PURE__*/ extend({
         duplicate: []
       }
       // Parse the unique tags
-      tags.forEach(tag => {
-        if (arrayIncludes(this.tags, tag) || arrayIncludes(parsed.valid, tag)) {
+      for (const tag of tags) {
+        const containsDuplicates = arrayIncludes(this.tags, tag) || arrayIncludes(parsed.valid, tag)
+
+        if (containsDuplicates) {
           // Unique duplicate tags
           if (!arrayIncludes(parsed.duplicate, tag)) {
             parsed.duplicate.push(tag)
           }
-        } else if (this.validateTag(tag)) {
+
+          if (this.noDuplicates) continue
+        }
+
+        if (this.validateTag(tag)) {
           // We only add unique/valid tags
           parsed.valid.push(tag)
         } else {
@@ -513,7 +523,8 @@ export const BFormTags = /*#__PURE__*/ extend({
             parsed.invalid.push(tag)
           }
         }
-      })
+      }
+
       return parsed
     },
     validateTag(tag) {
@@ -554,7 +565,7 @@ export const BFormTags = /*#__PURE__*/ extend({
       const h = this.$createElement
 
       // Make the list of tags
-      const $tags = tags.map(tag => {
+      const $tags = tags.map((tag, key) => {
         tag = toString(tag)
 
         return h(
@@ -573,7 +584,7 @@ export const BFormTags = /*#__PURE__*/ extend({
               variant: tagVariant
             },
             on: { remove: () => removeTag(tag) },
-            key: `tags_${tag}`
+            key: `tags_${tag}_${key}`
           },
           tag
         )
