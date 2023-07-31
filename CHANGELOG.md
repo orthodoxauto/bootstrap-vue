@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version) for commit
 guidelines.
 
+## [2.24.0](https://github.com/orthodoxauto/bootstrap-vue/compare/v2.23.1...v2.24.0) (2023-07-31)
+
+### Features
+
+- **b-form-tags:** add noDuplicates prop
+  ([a3bc7ca](https://github.com/orthodoxauto/bootstrap-vue/commit/a3bc7ca15b5d34cb7dbf678de05e70669db36d9e))
+
 ## [2.23.1](https://github.com/bootstrap-vue/bootstrap-vue/compare/v2.23.0...v2.23.1) (2022-10-26)
 
 ### Bug Fixes

@@ -4,7 +4,9 @@ import babel from 'rollup-plugin-babel'
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import { camelCase } from 'lodash'
-import { name, dependencies } from '../package.json'
+import { name as packageJsonName, dependencies } from '../package.json'
+
+const name = packageJsonName.replace('@orthodoxauto/', '')
 
 const bannerComment = require('./banner')
 
