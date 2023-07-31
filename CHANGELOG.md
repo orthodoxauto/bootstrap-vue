@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version) for commit
 guidelines.
 
+### [2.24.1](https://github.com/orthodoxauto/bootstrap-vue/compare/v2.24.0...v2.24.1) (2023-07-31)
+
+### Bug Fixes
+
+- **b-form-tags:** allow duplicate tags when using v-model
+  ([8b5157a](https://github.com/orthodoxauto/bootstrap-vue/commit/8b5157a72fb2d77f14bd6fd79d77ef7d0190e579))
+
 ## [2.24.0](https://github.com/orthodoxauto/bootstrap-vue/compare/v2.23.1...v2.24.0) (2023-07-31)
 
 ### Features
